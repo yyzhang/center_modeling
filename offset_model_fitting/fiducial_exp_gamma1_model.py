@@ -12,7 +12,7 @@ cosmo = FlatwCDM(H0=70, Om0=0.3)
 def make_model(r_offset, rlambda):
        # remember to adjust the prior ranges if the posterior values are out of range.
        rho_0=Uniform('Rho0', lower=0.3, upper=1 )
-       r0=Uniform('sigma0', lower=0.0001, upper=0.1 )
+       r0=Uniform('R0', lower=0.0001, upper=0.1 )
        tau=Uniform('tau', lower=0.04, upper=0.5 )
 
        r_rlam=r_offset/rlambda
@@ -74,7 +74,7 @@ if __name__ == "__main__":
     mc.sample(iter=n_iter, burn=n_burn, thin=n_thin)
      
     rho_0=np.loadtxt(mcmc_file+'/Chain_0/Rho0.txt')
-    r0=np.loadtxt(mcmc_file+'/Chain_0/sigma0.txt')
+    r0=np.loadtxt(mcmc_file+'/Chain_0/R0.txt')
     tau=np.loadtxt(mcmc_file+'/Chain_0/tau.txt')
     print 'Chain Results rho, sigma, tau: %0.3f +- %0.3f, %0.3f+-%0.3f, %0.4f+-%0.4f'%(np.mean(rho_0), np.std(rho_0), np.mean(r0), np.std(r0), np.mean(tau), np.std(tau))
  
