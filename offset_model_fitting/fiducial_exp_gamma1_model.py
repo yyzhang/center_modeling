@@ -1,13 +1,9 @@
-import math
+## This code fits the fiducial exponential + gamma(1) centering+miscentering offset model
+##
 import numpy as np
-import sys
-import scipy
-import matplotlib.pyplot as plt
 from astropy import units as u
 from astropy.coordinates import SkyCoord
 from astropy.cosmology import FlatwCDM
-import numpy.random
-from scipy.interpolate import interp1d
 from pymc import *
 import astropy.io.fits as pyfits
 
@@ -35,6 +31,8 @@ def make_model(r_offset, rlambda):
 if __name__ == "__main__":
 
  # read in files
+ # I hardwired the column names, file paths, so remember to change them when using your own catalogs.
+ ######################3
  cluster= pyfits.open('/home/s1/ynzhang/redmapper_centering/data_dump_June21/RM_SDSS_YUANYUAN-oct11.fits')[1].data
 
  lambdas=cluster['LAMBDA_OPTICAL']
@@ -43,6 +41,8 @@ if __name__ == "__main__":
  rdmp_dec=cluster['RM dec']
  xray_ra=cluster['peak ra']
  xray_dec=cluster['peak dec']
+ #####################
+
 
  # calculate separations
  centr=SkyCoord(rdmp_ra, rdmp_dec, frame='icrs', unit='deg')
@@ -76,5 +76,5 @@ if __name__ == "__main__":
     rho_0=np.loadtxt(mcmc_file+'/Chain_0/Rho0.txt')
     r0=np.loadtxt(mcmc_file+'/Chain_0/sigma0.txt')
     tau=np.loadtxt(mcmc_file+'/Chain_0/tau.txt')
-    print 'Chain Results: %0.3f +- %0.3f, %0.3f+-%0.3f, %0.4f+-%0.4f'%(np.mean(rho_0), np.std(rho_0), np.mean(r0), np.std(r0), np.mean(tau), np.std(tau))
+    print 'Chain Results rho, sigma, tau: %0.3f +- %0.3f, %0.3f+-%0.3f, %0.4f+-%0.4f'%(np.mean(rho_0), np.std(rho_0), np.mean(r0), np.std(r0), np.mean(tau), np.std(tau))
  
