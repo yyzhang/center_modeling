@@ -13,6 +13,7 @@ Dependencies:
 Python 2.7
 numpy
 matplotlib
+scipy
 pymc
 
 Contact: Yuanyuan Zhang (ynzhang@fnal.gov)
