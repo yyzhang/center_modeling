@@ -1,4 +1,4 @@
-## This code fits the fiducial exponential + gamma(shape parameter fixed at 2) centering+miscentering offset model
+## This code fits the fiducial exponential + bivariate cauchy centering+miscentering offset model
 ##
 import numpy as np
 from astropy import units as u
@@ -6,6 +6,7 @@ from astropy.coordinates import SkyCoord
 from astropy.cosmology import FlatwCDM
 from pymc import *
 import astropy.io.fits as pyfits
+from scipy.stats import cauchy
 
 cosmo = FlatwCDM(H0=70, Om0=0.3)
 
@@ -14,12 +15,13 @@ def make_model(r_offset, rlambda):
        rho_0=Uniform('Rho0', lower=0.3, upper=1 )
        r0=Uniform('R0', lower=0.0001, upper=0.1 )
        tau=Uniform('tau', lower=0.04, upper=0.5 )
+       k=Uniform('k', lower=1, upper=5 )
 
        r_rlam=r_offset/rlambda
        @pymc.stochastic(observed=True, plot=False)
        def log_prob(value=0, rho_0=rho_0, r0=r0, tau=tau):
            pr_cor=rho_0*( 1.0/r0*np.exp(-r_rlam/r0) )   
-           pr_mis=(1-rho_0)*(r_rlam)*( np.exp(-r_rlam/tau) )/tau**2
+           pr_mis=(1-rho_0)*(tau)/(r_rlam**2+tau**2)**1.5*r_rlam # the mis-centering component has been changed to a bivariate Cauchy dist
            pr=pr_cor+pr_mis
            logpr1=np.log(pr)
 
@@ -64,7 +66,7 @@ if __name__ == "__main__":
     rlmd=rlmds[ind]
 
     # now start running the chain and print out the posterior mean and stdev at the end
-    mcmc_file='mcmc_output/XCS_exp_gamma1_lmd%i_lt%i'%(lmd_min, lmd_max)
+    mcmc_file='mcmc_output/XCS_exp_cauchy_lmd%i_lt%i'%(lmd_min, lmd_max)
     M=pymc.Model(make_model(r_offset, rlmd))
     mc=MCMC(M, db='txt', dbname=mcmc_file)
     num=1000 # these numbers should be high enough that the mcmc chains converge

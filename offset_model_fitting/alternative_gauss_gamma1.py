@@ -18,7 +18,7 @@ def make_model(r_offset, rlambda):
        r_rlam=r_offset/rlambda
        @pymc.stochastic(observed=True, plot=False)
        def log_prob(value=0, rho_0=rho_0, r0=r0, tau=tau):
-           pr_cor=rho_0*( 1.0/r0*np.exp(-r_rlam/r0) )   
+           pr_cor=rho_0*( 2.0/r0/np.sqrt(2.0*np.pi)*np.exp(-(r_rlam/r0)**2*0.5 ) ) # gauss model
            pr_mis=(1-rho_0)*(r_rlam)*( np.exp(-r_rlam/tau) )/tau**2
            pr=pr_cor+pr_mis
            logpr1=np.log(pr)
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     rlmd=rlmds[ind]
 
     # now start running the chain and print out the posterior mean and stdev at the end
-    mcmc_file='mcmc_output/XCS_exp_gamma1_lmd%i_lt%i'%(lmd_min, lmd_max)
+    mcmc_file='mcmc_output/XCS_gauss_gamma1_lmd%i_lt%i'%(lmd_min, lmd_max)
     M=pymc.Model(make_model(r_offset, rlmd))
     mc=MCMC(M, db='txt', dbname=mcmc_file)
     num=1000 # these numbers should be high enough that the mcmc chains converge
