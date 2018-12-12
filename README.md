@@ -21,5 +21,5 @@ Contact: Yuanyuan Zhang (ynzhang@fnal.gov)
 Miscelleneous:
 
 Those that are new to the project may also want to check out the tutorial here:
-https://github.com/KIPAC/StatisticalMethods/problems/model_evaluation.ipynb
+https://github.com/KIPAC/StatisticalMethods/blob/1a8d82d6e54c421fb22f2e891293f220bf257da1/problems/model_evaluation.ipynb
 
