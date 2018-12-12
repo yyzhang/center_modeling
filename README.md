@@ -11,3 +11,8 @@ Dependencies: Python 2.7
 
 Contacts: Yuanyuan Zhang (ynzhang@fnal.gov)
 
+Miscelleneous:
+
+Those that are new to the project may also want to check out the tutorial here:
+https://github.com/KIPAC/StatisticalMethods/problems/model_evaluation.ipynb
+
